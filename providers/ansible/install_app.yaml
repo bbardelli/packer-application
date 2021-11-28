@@ -1,0 +1,20 @@
+---
+- name: Deploy cherrypy application
+  hosts: 'all'
+  become: yes
+  become_method: sudo
+  tasks:
+    - name: Deploy application
+      git:
+        repo: 'https://github.com/bbardelli/test-application.git'
+        dest: /var/application
+    
+    - name: Assign permissions
+      command: chmod 0644 /var/application
+      notify: restart cherrypy
+
+  handlers:
+    - name: restart cherrypy
+      service:
+        name: cherrypy
+        state: restarted  
