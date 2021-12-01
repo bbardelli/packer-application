@@ -7,16 +7,15 @@ packer {
   }
 }
 
-source "amazon-ebs" "tomcat" {
-  ami_name      = "packer-linux-aws-tomcat-app"
+source "amazon-ebs" "python" {
+  ami_name      = "packer-linux-aws-python-app"
   instance_type = "t2.micro"
   region        = "us-east-1"
-  iam_instance_profile = "EC2-compliance"
   force_deregister = true
   force_delete_snapshot = true
   source_ami_filter {
     filters = {
-      name                = "packer-linux-aws-tomcat"
+      name                = "packer-linux-aws-python"
     }
     most_recent = true
     owners      = ["self"]
@@ -29,7 +28,7 @@ source "amazon-ebs" "tomcat" {
 
 build {
   sources = [
-    "source.amazon-ebs.tomcat"
+    "source.amazon-ebs.python"
   ]
   provisioner "ansible" {
     playbook_file = "./providers/ansible/install_app.yaml"
